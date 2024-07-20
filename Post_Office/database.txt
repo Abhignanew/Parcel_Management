@@ -1,0 +1,46 @@
+CREATE TABLE post_office (
+    pno INT AUTO_INCREMENT PRIMARY KEY,
+    pname VARCHAR(100) NOT NULL,
+    paddress VARCHAR(100) NOT NULL,
+);
+
+CREATE TABLE employee (
+    e_id INT AUTO_INCREMENT PRIMARY KEY,
+    ename VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    pno INT,
+    FOREIGN KEY (pno) REFERENCES post_office(pno)
+);
+
+CREATE TABLE customer (
+    cid INT AUTO_INCREMENT PRIMARY KEY,
+    cname VARCHAR(100) NOT NULL,
+    cphone INT NOT NULL UNIQUE,
+    caddress VARCHAR(100) NOT NULL,
+    pno INT,
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (pno) REFERENCES post_office(pno)
+);
+
+CREATE TABLE parcel (
+    parcel_id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT,
+    receiver_id INT,
+    e_id int,
+    description TEXT,
+    amount Int,
+    weight int,
+    status VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender_id) REFERENCES customer(cid),
+    FOREIGN KEY (receiver_id) REFERENCES customer(cid),
+    FOREIGN KEY (e_id) REFERENCES employee(e_id)
+);
+
+customer:
+1->hello@123
+2->thankyou
+
+employee:
+1->elegant
+
