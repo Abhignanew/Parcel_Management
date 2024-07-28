@@ -43,13 +43,14 @@ $conn->close();
         .form-container { width: 300px; margin: 0 auto; }
         .form-group { margin-bottom: 15px; }
         label { display: block; }
-        input { width: 100%; padding: 8px; }
+        input, select { width: 100%; padding: 8px; }
+        .error { color: red; }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h2>Register</h2>
-        <form method="post">
+        <form id="registrationForm" method="post">
             <div class="form-group">
                 <label for="userType">Register as:</label>
                 <select name="userType" required>
@@ -75,10 +76,38 @@ $conn->close();
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" name="password" required>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" name="confirmPassword" id="confirmPassword" required>
             </div>
             <button type="submit">Register</button>
         </form>
+        <div id="errorMessages" class="error"></div>
     </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            let errorMessages = '';
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                errorMessages += 'Passwords do not match.<br>';
+            }
+
+            const phone = document.getElementsByName('phone')[0].value;
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phone)) {
+                errorMessages += 'Phone number must be 10 digits.<br>';
+            }
+
+            if (errorMessages) {
+                event.preventDefault();
+                document.getElementById('errorMessages').innerHTML = errorMessages;
+            }
+        });
+    </script>
 </body>
 </html>

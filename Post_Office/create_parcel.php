@@ -47,12 +47,50 @@ $conn->close();
         .form-group { margin-bottom: 15px; }
         label { display: block; }
         input, textarea { width: 100%; padding: 8px; }
+        .error { color: red; font-size: 12px; }
     </style>
+    <script>
+        function validateForm() {
+            let isValid = true;
+            let senderId = document.forms["parcelForm"]["sender_id"].value;
+            let receiverId = document.forms["parcelForm"]["receiver_id"].value;
+            let description = document.forms["parcelForm"]["description"].value;
+            let amount = document.forms["parcelForm"]["amount"].value;
+            let weight = document.forms["parcelForm"]["weight"].value;
+            let errorMessage = "";
+
+            if (senderId === "") {
+                errorMessage += "Sender ID is required.\n";
+                isValid = false;
+            }
+            if (receiverId === "") {
+                errorMessage += "Receiver ID is required.\n";
+                isValid = false;
+            }
+            if (description === "") {
+                errorMessage += "Description is required.\n";
+                isValid = false;
+            }
+            if (amount === "" || isNaN(amount) || amount <= 0) {
+                errorMessage += "Valid amount is required.\n";
+                isValid = false;
+            }
+            if (weight === "" || isNaN(weight) || weight <= 0) {
+                errorMessage += "Valid weight is required.\n";
+                isValid = false;
+            }
+
+            if (!isValid) {
+                alert(errorMessage);
+            }
+            return isValid;
+        }
+    </script>
 </head>
 <body>
     <div class="form-container">
         <h2>Create Parcel</h2>
-        <form method="post">
+        <form name="parcelForm" method="post" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="sender_id">Sender ID:</label>
                 <input type="text" name="sender_id" required>

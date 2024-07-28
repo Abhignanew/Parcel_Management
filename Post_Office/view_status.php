@@ -37,16 +37,18 @@ $conn->close();
     <title>View Parcel Status</title>
     <style>
         body { font-family: Arial, sans-serif; }
-        .table-container { width: 600px; margin: 0 auto; }
+        .table-container { width: 800px; margin: 0 auto; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background-color: #f2f2f2; }
+        #search { margin-bottom: 15px; width: 100%; padding: 8px; }
     </style>
 </head>
 <body>
     <div class="table-container">
         <h2>View Parcel Status</h2>
-        <table>
+        <input type="text" id="search" placeholder="Search parcels...">
+        <table id="parcelTable">
             <thead>
                 <tr>
                     <th>Parcel ID</th>
@@ -73,5 +75,27 @@ $conn->close();
             </tbody>
         </table>
     </div>
+
+    <script>
+        document.getElementById('search').addEventListener('keyup', function() {
+            let searchValue = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#parcelTable tbody tr');
+
+            rows.forEach(function(row) {
+                let showRow = false;
+                row.querySelectorAll('td').forEach(function(cell) {
+                    if (cell.textContent.toLowerCase().includes(searchValue)) {
+                        showRow = true;
+                    }
+                });
+
+                if (showRow) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

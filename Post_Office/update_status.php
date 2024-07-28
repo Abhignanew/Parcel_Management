@@ -42,15 +42,16 @@ $conn->close();
         .form-group { margin-bottom: 15px; }
         label { display: block; }
         input, select { width: 100%; padding: 8px; }
+        .error { color: red; }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h2>Update Parcel Status</h2>
-        <form method="post">
+        <form id="updateStatusForm" method="post">
             <div class="form-group">
                 <label for="parcel_id">Parcel ID:</label>
-                <input type="text" name="parcel_id" required>
+                <input type="text" name="parcel_id" id="parcel_id" required>
             </div>
             <div class="form-group">
                 <label for="status">Status:</label>
@@ -62,6 +63,23 @@ $conn->close();
             </div>
             <button type="submit">Update Status</button>
         </form>
+        <div id="errorMessages" class="error"></div>
     </div>
+
+    <script>
+        document.getElementById('updateStatusForm').addEventListener('submit', function(event) {
+            let errorMessages = '';
+            const parcelId = document.getElementById('parcel_id').value;
+
+            if (parcelId.trim() === '') {
+                errorMessages += 'Parcel ID is required.<br>';
+            }
+
+            if (errorMessages) {
+                event.preventDefault();
+                document.getElementById('errorMessages').innerHTML = errorMessages;
+            }
+        });
+    </script>
 </body>
 </html>

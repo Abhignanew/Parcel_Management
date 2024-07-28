@@ -55,20 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "No user found with the given phone";
         }
     }
-
-    // $result = $conn->query($sql);
-    // if ($result->num_rows > 0) {
-    //     $row = $result->fetch_assoc();
-    //     if (password_verify($password, $row["password"])) {
-    //         $_SESSION["userid"] = $row["cid"] ?? $row["e_id"];
-    //         $_SESSION["usertype"] = $userType;
-    //         header("Location: view_status.php");
-    //     } else {
-    //         echo "Invalid password";
-    //     }
-    // } else {
-    //     echo "No user found with the given phone";
-    // }
 }
 
 $conn->close();
@@ -97,17 +83,44 @@ $conn->close();
             display: block;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 8px;
         }
     </style>
+    <script>
+        function validateForm() {
+            let isValid = true;
+            let userType = document.forms["loginForm"]["userType"].value;
+            let cid = document.forms["loginForm"]["cid"].value;
+            let password = document.forms["loginForm"]["password"].value;
+            let errorMessage = "";
+
+            if (userType === "") {
+                errorMessage += "User type is required.\n";
+                isValid = false;
+            }
+            if (cid === "") {
+                errorMessage += "User ID is required.\n";
+                isValid = false;
+            }
+            if (password === "") {
+                errorMessage += "Password is required.\n";
+                isValid = false;
+            }
+
+            if (!isValid) {
+                alert(errorMessage);
+            }
+            return isValid;
+        }
+    </script>
 </head>
 
 <body>
     <div class="form-container">
         <h2>Login</h2>
-        <form method="post">
+        <form name="loginForm" method="post" onsubmit="return validateForm()">
             <div class="form-group">
                 <label for="userType">Login as:</label>
                 <select name="userType" required>
@@ -116,7 +129,7 @@ $conn->close();
                 </select>
             </div>
             <div class="form-group">
-                <label for="cid">User Id</label>
+                <label for="cid">User ID:</label>
                 <input type="text" name="cid" required>
             </div>
             <div class="form-group">
